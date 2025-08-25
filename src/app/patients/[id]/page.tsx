@@ -18,6 +18,7 @@ export default function PatientDetailPage(){
     return (
       <div className="space-y-4">
         <Link href="/patients" className="btn btn-soft">Zurück</Link>
+		<Link href={`/medication?resident=${p.id}`} className="btn btn-soft">Zum Medikamentenplan</Link>
         <div className="card p-6">Patient nicht gefunden.</div>
       </div>
     )

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Users, Contact2, Map, BedDouble, Settings, Search } from 'lucide-react';
+import { Users, Contact2, BedDouble, Settings, Search, Pill } from 'lucide-react';
 
 function NavItem({
   href,
@@ -35,8 +35,8 @@ export default function SideNavClient() {
       <nav className="px-3 space-y-1">
         <NavItem href="/dashboard" icon={<Search size={18} />}>Dashboard</NavItem>
         <NavItem href="/patients"  icon={<Users size={18} />}>Patienten</NavItem>
+        <NavItem href="/medication" icon={<Pill size={18} />}>Medikamentenplan</NavItem>
         <NavItem href="/relatives" icon={<Contact2 size={18} />}>Angehörige</NavItem>
-        <NavItem href="/tours"     icon={<Map size={18} />}>Touren</NavItem>
         <NavItem href="/rooms"     icon={<BedDouble size={18} />}>Zimmer</NavItem>
         <div className="my-2 border-t border-[color:var(--brand-300)]" />
         <NavItem href="/admin"     icon={<Settings size={18} />}>Admin</NavItem>
