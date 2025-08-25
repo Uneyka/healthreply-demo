@@ -1,59 +1,53 @@
 // src/app/layout.tsx
-import './globals.css'
-import Link from 'next/link'
-import { Users, Contact2, Map, BedDouble, Settings } from 'lucide-react'
+import "./globals.css";
+import Link from "next/link";
+import type { Metadata, Viewport } from "next";
+import { Users, Contact2, Map, BedDouble, Settings } from "lucide-react";
 
-export const metadata = {
-  title: 'HealthReply',
-  description: 'Demo'
-}
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="de" suppressHydrationWarning>
-      <body className="min-h-screen bg-gray-50 text-gray-900">
-        <div className="flex min-h-screen">
-          {/* Sidebar */}
-          <aside className="w-64 bg-red-600 text-white">
-            <div className="p-5 text-xl font-bold tracking-tight">HealthReply</div>
-            <nav className="px-2 pb-4 space-y-1">
-              <NavItem href="/patients" icon={<Users size={18} />}>Patienten</NavItem>
-              <NavItem href="/relatives" icon={<Contact2 size={18} />}>Angehörige</NavItem>
-              <NavItem href="/tours" icon={<Map size={18} />}>Touren</NavItem>
-              <NavItem href="/rooms" icon={<BedDouble size={18} />}>Zimmer</NavItem>
-
-              <div className="mt-3 border-t border-red-500/40" />
-
-              <NavItem href="/admin" icon={<Settings size={18} />}>Admin</NavItem>
-            </nav>
-          </aside>
-
-          {/* Inhalt */}
-          <main className="flex-1 p-6">
-            {children}
-          </main>
-        </div>
-      </body>
-    </html>
-  )
-}
+export const metadata: Metadata = {
+  title: "HealthReply",
+  description: "Demo",
+};
+export const viewport: Viewport = { themeColor: "#ffffff" };
 
 function NavItem({
   href,
   icon,
-  children
+  children,
 }: {
-  href: string
-  icon: React.ReactNode
-  children: React.ReactNode
+  href: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
 }) {
   return (
     <Link
       href={href}
-      className="flex items-center gap-2 rounded-md px-3 py-2 text-white/90 hover:bg-red-700 hover:text-white transition-colors"
+      className="inline-flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-neutral-100 dark:hover:bg-neutral-800"
     >
       {icon}
       <span>{children}</span>
     </Link>
-  )
+  );
+}
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="de">
+      <body className="antialiased">
+        <header className="border-b">
+          <div className="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+            <Link href="/" className="font-semibold text-lg">HealthReply</Link>
+            <nav aria-label="Hauptnavigation" className="flex items-center gap-1">
+              <NavItem href="/residents" icon={<Users size={18} />}>Bewohner</NavItem>
+              <NavItem href="/relatives" icon={<Contact2 size={18} />}>Angehörige</NavItem>
+              <NavItem href="/wards" icon={<Map size={18} />}>Stationen</NavItem>
+              <NavItem href="/rooms" icon={<BedDouble size={18} />}>Zimmer</NavItem>
+              <NavItem href="/settings" icon={<Settings size={18} />}>Einstellungen</NavItem>
+            </nav>
+          </div>
+        </header>
+        <div className="mx-auto max-w-6xl px-4 py-6">{children}</div>
+      </body>
+    </html>
+  );
 }
