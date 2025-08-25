@@ -8,7 +8,15 @@ export const patients: Patient[] = [
     birthDate: '1942-03-14',
     status: 'aktiv',
     avatar: 'https://i.pravatar.cc/100?img=12',
-    notes: 'Geht gern spazieren, mag kurze Nachrichten.'
+    insuranceName: 'AOK Bayern',
+    insuranceId: 'AOK-19420314-001',
+    diet: 'Normalkost',
+    allergies: ['Pollen (leicht)'],
+    primaryPhysician: 'Dr. med. Schneider',
+    notes: 'Geht gern spazieren, mag kurze Nachrichten.',
+    relatives: [
+      { name: 'Anna Meier', relation: 'Tochter', email: 'anna@example.com' }
+    ]
   },
   {
     id: 'p2',
@@ -16,7 +24,15 @@ export const patients: Patient[] = [
     room: '102',
     birthDate: '1937-11-02',
     status: 'aktiv',
-    avatar: 'https://i.pravatar.cc/100?img=32'
+    avatar: 'https://i.pravatar.cc/100?img=32',
+    insuranceName: 'TK',
+    insuranceId: 'TK-19371102-221',
+    diet: 'Diabetiker',
+    allergies: ['Penicillin'],
+    primaryPhysician: 'MVZ Innenstadt',
+    relatives: [
+      { name: 'Peter Schulz', relation: 'Sohn', email: 'peter@example.com' }
+    ]
   },
   {
     id: 'p3',
@@ -24,6 +40,12 @@ export const patients: Patient[] = [
     room: '103',
     birthDate: '1930-06-21',
     status: 'inaktiv',
-    avatar: 'https://i.pravatar.cc/100?img=5'
+    avatar: 'https://i.pravatar.cc/100?img=5',
+    insuranceName: 'DAK Gesundheit',
+    insuranceId: 'DAK-19300621-045',
+    diet: 'Leichtverdaulich',
+    allergies: [],
+    primaryPhysician: 'Hausarztpraxis West',
+    relatives: []
   }
 ]
