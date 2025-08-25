@@ -79,6 +79,9 @@ export default function PatientDetailPage(){
       )}
 
       {tab==='angehoerige' && (
+	  <div className="mb-3">
+  <Link className="btn btn-primary" href={`/relatives`}>Angehörige verknüpfen</Link>
+</div>
         <div className="card p-4">
           <h2 className="h2">Verknüpfte Angehörige</h2>
           <div className="divider"></div>
