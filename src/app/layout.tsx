@@ -1,59 +1,32 @@
-// src/app/layout.tsx
-import './globals.css'
-import Link from 'next/link'
-import { Users, Contact2, Map, BedDouble, Settings } from 'lucide-react'
+import './globals.css';
+import Link from 'next/link';
+import SideNavClient from '@/components/SideNavClient';
 
-export const metadata = {
-  title: 'HealthReply',
-  description: 'Demo'
-}
+export const metadata = { title: 'HealthReply', description: 'Demo' };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="de" suppressHydrationWarning>
-      <body className="min-h-screen bg-gray-50 text-gray-900">
-        <div className="flex min-h-screen">
-          {/* Sidebar */}
-          <aside className="w-64 bg-red-600 text-white">
-            <div className="p-5 text-xl font-bold tracking-tight">HealthReply</div>
-            <nav className="px-2 pb-4 space-y-1">
-              <NavItem href="/patients" icon={<Users size={18} />}>Patienten</NavItem>
-              <NavItem href="/relatives" icon={<Contact2 size={18} />}>Angehörige</NavItem>
-              <NavItem href="/tours" icon={<Map size={18} />}>Touren</NavItem>
-              <NavItem href="/rooms" icon={<BedDouble size={18} />}>Zimmer</NavItem>
-
-              <div className="mt-3 border-t border-red-500/40" />
-
-              <NavItem href="/admin" icon={<Settings size={18} />}>Admin</NavItem>
-            </nav>
+      <body>
+        <div className="min-h-screen flex">
+          <aside className="sidebar">
+            <SideNavClient />
           </aside>
 
-          {/* Inhalt */}
-          <main className="flex-1 p-6">
-            {children}
+          <main className="flex-1">
+            <div className="topbar">
+              <div className="mx-auto max-w-6xl px-6 py-3 flex items-center justify-between">
+                <div className="h2">Pflege-Dashboard</div>
+                <div className="flex items-center gap-2">
+                  <input placeholder="Suchen…" className="input" />
+                  <Link href="/patients/new" className="btn btn-primary">Neuer Patient</Link>
+                </div>
+              </div>
+            </div>
+            <div className="mx-auto max-w-6xl p-6">{children}</div>
           </main>
         </div>
       </body>
     </html>
-  )
-}
-
-function NavItem({
-  href,
-  icon,
-  children
-}: {
-  href: string
-  icon: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <Link
-      href={href}
-      className="flex items-center gap-2 rounded-md px-3 py-2 text-white/90 hover:bg-red-700 hover:text-white transition-colors"
-    >
-      {icon}
-      <span>{children}</span>
-    </Link>
-  )
+  );
 }
