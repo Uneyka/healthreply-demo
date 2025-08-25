@@ -1,7 +1,7 @@
-import { patients } from '@/data/patients'
-import Link from 'next/link'
-import Badge from '@/components/Badge'
-import { ArrowLeft, CalendarDays, Pencil } from 'lucide-react'
+import { patients } from "@/data/patients"
+import Link from "next/link"
+import Badge from "@/components/Badge"
+import { ArrowLeft, CalendarDays, Pencil } from "lucide-react"
 
 export default function PatientDetail({ params }:{ params: { id: string }}) {
   const p = patients.find(x => x.id === params.id)
@@ -23,18 +23,14 @@ export default function PatientDetail({ params }:{ params: { id: string }}) {
           <img src={p.avatar} alt={p.fullName} className="h-16 w-16 rounded-full object-cover"/>
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">{p.fullName}</h1>
-            <div className="text-sm text-gray-600">Zimmer {p.room ?? '—'} • Geb. {p.birthDate ?? '—'}</div>
+            <div className="text-sm text-gray-600">Zimmer {p.room ?? "—"} • Geb. {p.birthDate ?? "—"}</div>
           </div>
         </div>
         <div>
-          {p.status === 'aktiv'
-            ? <Badge tone="success">aktiv</Badge>
-            : <Badge tone="danger">inaktiv</Badge>
-          }
+          {p.status === "aktiv" ? <Badge tone="success">aktiv</Badge> : <Badge tone="danger">inaktiv</Badge>}
         </div>
       </div>
 
-      {/* Notizen */}
       {p.notes && (
         <div className="rounded-xl border bg-white p-4">
           <div className="text-sm text-gray-500 mb-1">Notizen</div>
@@ -42,7 +38,6 @@ export default function PatientDetail({ params }:{ params: { id: string }}) {
         </div>
       )}
 
-      {/* Tageskarte / Status-Erfassung – Platzhalter */}
       <div className="rounded-xl border bg-white p-4 space-y-3">
         <div className="flex items-center justify-between">
           <div className="font-medium text-gray-900">Tageskarte (Demo)</div>
@@ -55,7 +50,6 @@ export default function PatientDetail({ params }:{ params: { id: string }}) {
         </div>
       </div>
 
-      {/* Nachrichtenhistorie – Dummy */}
       <div className="rounded-xl border bg-white p-4">
         <div className="flex items-center gap-2 text-gray-700 mb-2">
           <CalendarDays size={16}/> <span className="font-medium">Nachrichten (Demo)</span>
