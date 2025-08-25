@@ -33,14 +33,16 @@ export default function SideNavClient() {
         <div className="text-sm text-[color:var(--brand-900)]/70 mt-1">Demo • Light Blue</div>
       </div>
       <nav className="px-3 space-y-1">
-        <NavItem href="/dashboard" icon={<Search size={18} />}>Dashboard</NavItem>
-        <NavItem href="/patients"  icon={<Users size={18} />}>Patienten</NavItem>
-        <NavItem href="/medication" icon={<Pill size={18} />}>Medikamentenplan</NavItem>
-        <NavItem href="/relatives" icon={<Contact2 size={18} />}>Angehörige</NavItem>
-        <NavItem href="/rooms"     icon={<BedDouble size={18} />}>Zimmer</NavItem>
-        <div className="my-2 border-t border-[color:var(--brand-300)]" />
-        <NavItem href="/admin"     icon={<Settings size={18} />}>Admin</NavItem>
-      </nav>
+  <NavItem href="/dashboard" icon={<Search size={18} />}>Dashboard</NavItem>
+  <NavItem href="/patients"  icon={<Users size={18} />}>Patienten</NavItem>
+  <NavItem href="/medication" icon={<Pill size={18} />}>Medikamentenplan</NavItem>
+  <NavItem href="/relatives" icon={<Contact2 size={18} />}>Angehörige</NavItem>
+  <NavItem href="/rooms"     icon={<BedDouble size={18} />}>Zimmer</NavItem>
+  <NavItem href="/email"     icon={<svg width="18" height="18" viewBox="0 0 24 24" className="inline"><path d="M4 6h16v12H4z" fill="none" stroke="currentColor"/><path d="M4 6l8 6 8-6" fill="none" stroke="currentColor"/></svg>}>E-Mail</NavItem>
+  <NavItem href="/whatsapp"  icon={<svg width="18" height="18" viewBox="0 0 24 24" className="inline"><path d="M9 22l1-4a8 8 0 118  -8 8" fill="none" stroke="currentColor"/><path d="M16 17c-3 1-8-4-7-7" fill="none" stroke="currentColor"/></svg>}>WhatsApp</NavItem>
+  <div className="my-2 border-t border-[color:var(--brand-300)]" />
+  <NavItem href="/admin"     icon={<Settings size={18} />}>Admin</NavItem>
+</nav>
       <div className="mt-auto p-4 text-xs text-[color:var(--brand-900)]/60">v0.2 • Demo</div>
     </>
   );
