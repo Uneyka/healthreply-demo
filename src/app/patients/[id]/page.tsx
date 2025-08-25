@@ -39,6 +39,7 @@ export default function PatientDetailPage(){
   return (
     <div className="space-y-6">
       {/* Header */}
+	  <Link href={`/rooms`} className="btn btn-soft">Zimmerübersicht</Link>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <img src={p.avatar} className="h-16 w-16 rounded-full object-cover" alt={p.fullName}/>
