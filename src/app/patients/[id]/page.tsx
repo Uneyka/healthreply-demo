@@ -18,7 +18,6 @@ export default function PatientDetailPage(){
     return (
       <div className="space-y-4">
         <Link href="/patients" className="btn btn-soft">Zurück</Link>
-		<Link href={`/medication?resident=${p.id}`} className="btn btn-soft">Zum Medikamentenplan</Link>
         <div className="card p-6">Patient nicht gefunden.</div>
       </div>
     )
@@ -39,7 +38,6 @@ export default function PatientDetailPage(){
   return (
     <div className="space-y-6">
       {/* Header */}
-	  <Link href={`/rooms`} className="btn btn-soft">Zimmerübersicht</Link>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <img src={p.avatar} className="h-16 w-16 rounded-full object-cover" alt={p.fullName}/>
@@ -48,7 +46,10 @@ export default function PatientDetailPage(){
             <div className="text-sm text-slate-600">Zimmer {p.room ?? '—'} • Geb. {p.birthDate ?? '—'}</div>
           </div>
         </div>
-        <Link href="/patients" className="btn btn-soft">Zurück</Link>
+        <div className="flex gap-2">
+          <Link href={`/medication?resident=${p.id}`} className="btn btn-soft">Zum Medikamentenplan</Link>
+          <Link href="/patients" className="btn btn-soft">Zurück</Link>
+        </div>
       </div>
 
       {/* Tabs */}
@@ -81,12 +82,16 @@ export default function PatientDetailPage(){
       )}
 
       {tab==='angehoerige' && (
-	  <div className="mb-3">
-  <Link className="btn btn-primary" href={`/relatives`}>Angehörige verknüpfen</Link>
-</div>
         <div className="card p-4">
           <h2 className="h2">Verknüpfte Angehörige</h2>
           <div className="divider"></div>
+
+          {/* Aktion oben: Verknüpfen */}
+          <div className="mb-3 flex flex-wrap gap-2">
+            <Link className="btn btn-primary" href={`/relatives`}>Angehörige verknüpfen</Link>
+          </div>
+
+          {/* Liste */}
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
             {p.relatives?.length
               ? p.relatives.map((r, i) => (
@@ -114,7 +119,7 @@ export default function PatientDetailPage(){
             ))}
           </ul>
 
-          {/* Demo: neuen Eintrag simulieren (schreibt in localStorage, bleibt aber „nicht bearbeitbar“ als Prinzip) */}
+          {/* Demo: neuen Eintrag simulieren */}
           <div className="mt-4">
             <button
               className="btn btn-primary"
@@ -125,7 +130,6 @@ export default function PatientDetailPage(){
                 const ts = now.toLocaleDateString('de-DE') + ' ' + now.toLocaleTimeString('de-DE', {hour:'2-digit', minute:'2-digit'})
                 const next = [{ts, text: t}, ...customEntries]
                 localStorage.setItem(key, JSON.stringify(next))
-                // naive reload für demo
                 window.location.reload()
               }}
             >
