@@ -1,0 +1,23 @@
+x-common: &common
+  build: .
+  env_file:
+    - .env
+  restart: unless-stopped
+  volumes:
+    - signal_data:/data
+
+services:
+  scheduler:
+    <<: *common
+    container_name: news_signal_scheduler
+    command: ["python", "-m", "app.main"]
+
+  health:
+    <<: *common
+    container_name: news_signal_health
+    command: ["python", "-m", "app.health_server"]
+    ports:
+      - "8080:8080"
+
+volumes:
+  signal_data:
