@@ -17,6 +17,7 @@ from app.nlp.classify import classify_event
 from app.nlp.summarize import maybe_summarize
 from app.notify.notion import send_to_notion
 from app.notify.telegram import render_telegram_message, send_telegram
+from app.utils.text import markdown_v2_escape
 from app.signal.builder import build_signal
 from app.signal.gates import pass_gates
 from app.signal.scoring import compute_expected_range
@@ -109,6 +110,14 @@ def run_scheduler() -> None:
     setup_logging()
     init_db()
     logger.info('scheduler_started')
+
+    startup_message = markdown_v2_escape(f"[SYSTEM] News-Signal scheduler started UTC={datetime.now(timezone.utc).isoformat()}")
+    ok, response = send_telegram(startup_message)
+    if ok:
+        logger.info('startup_telegram_sent')
+    else:
+        logger.warning('startup_telegram_failed reason=%s', response)
+
     while True:
         try:
             inserted = ingest_news()
