@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import logging
 
 import requests
 
@@ -9,15 +10,21 @@ from app.storage.models import NewsItem
 from app.utils.hashing import dedupe_hash
 from app.utils.text import sanitize_text
 
+logger = logging.getLogger('news-signal')
+
 
 def collect_finnhub(symbol: str = 'AAPL') -> list[NewsItem]:
     if not settings.finnhub_enabled or not settings.finnhub_api_key:
         return []
     url = 'https://finnhub.io/api/v1/company-news'
     params = {'symbol': symbol, 'from': datetime.now(timezone.utc).strftime('%Y-%m-%d'), 'to': datetime.now(timezone.utc).strftime('%Y-%m-%d'), 'token': settings.finnhub_api_key}
-    r = requests.get(url, params=params, timeout=10)
-    r.raise_for_status()
-    rows = r.json()
+    try:
+        r = requests.get(url, params=params, timeout=10)
+        r.raise_for_status()
+        rows = r.json()
+    except requests.RequestException as exc:
+        logger.warning('finnhub_fetch_failed symbol=%s error=%s', symbol, exc)
+        return []
 
     out: list[NewsItem] = []
     for row in rows:

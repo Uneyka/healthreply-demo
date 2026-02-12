@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import csv
 import io
+import logging
 import time
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
@@ -9,6 +10,8 @@ from dataclasses import dataclass
 import requests
 
 from app.config import settings
+
+logger = logging.getLogger('news-signal')
 
 
 @dataclass
@@ -35,8 +38,13 @@ class StooqAdapter(PriceAdapter):
 
         symbol = f'{asset.lower()}.us' if len(asset) <= 5 and asset.isalpha() else asset.lower()
         url = settings.stooq_url_template.format(symbol=symbol)
-        r = requests.get(url, timeout=8)
-        r.raise_for_status()
+        try:
+            r = requests.get(url, timeout=8)
+            r.raise_for_status()
+        except requests.RequestException as exc:
+            logger.warning('price_fetch_failed asset=%s url=%s error=%s', asset, url, exc)
+            return []
+
         reader = csv.DictReader(io.StringIO(r.text))
         bars: list[PriceBar] = []
         for row in reader:

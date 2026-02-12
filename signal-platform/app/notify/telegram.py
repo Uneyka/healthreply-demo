@@ -1,10 +1,14 @@
 from __future__ import annotations
 
+import logging
+
 import requests
 
 from app.config import settings
 from app.storage.models import SignalPayload
 from app.utils.text import markdown_v2_escape
+
+logger = logging.getLogger('news-signal')
 
 
 def render_telegram_message(sig: SignalPayload) -> str:
@@ -26,10 +30,17 @@ def render_telegram_message(sig: SignalPayload) -> str:
 def send_telegram(message: str) -> tuple[bool, str]:
     if not settings.telegram_bot_token or not settings.telegram_chat_ids:
         return False, 'telegram_not_configured'
+
     url = f'https://api.telegram.org/bot{settings.telegram_bot_token}/sendMessage'
     for chat_id in settings.telegram_chat_ids:
         payload = {'chat_id': chat_id, 'text': message, 'parse_mode': 'MarkdownV2', 'disable_web_page_preview': True}
-        r = requests.post(url, json=payload, timeout=8)
+        try:
+            r = requests.post(url, json=payload, timeout=8)
+        except requests.RequestException as exc:
+            logger.warning('telegram_send_failed chat_id=%s error=%s', chat_id, exc)
+            return False, f'telegram_request_error: {exc}'
+
         if not r.ok:
             return False, r.text[:500]
+
     return True, 'ok'

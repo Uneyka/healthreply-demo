@@ -47,7 +47,21 @@ def health() -> dict:
 
 def ingest_news() -> int:
     inserted = 0
-    for item in [*collect_rss(), *collect_finnhub()]:
+    items = []
+
+    try:
+        items.extend(collect_rss())
+    except Exception as exc:
+        logger.warning('rss_collect_failed error=%s', exc)
+        add_error('collect_rss', str(exc), {})
+
+    try:
+        items.extend(collect_finnhub())
+    except Exception as exc:
+        logger.warning('finnhub_collect_failed error=%s', exc)
+        add_error('collect_finnhub', str(exc), {})
+
+    for item in items:
         if dedupe_exists(item.dedupe_hash, settings.dedupe_hours):
             continue
         if insert_news(item):
@@ -110,6 +124,7 @@ def run_scheduler() -> None:
     setup_logging()
     init_db()
     logger.info('scheduler_started')
+    logger.info('telegram_config_present=%s chat_count=%s', bool(settings.telegram_bot_token), len(settings.telegram_chat_ids))
 
     startup_message = markdown_v2_escape(f"[SYSTEM] News-Signal scheduler started UTC={datetime.now(timezone.utc).isoformat()}")
     ok, response = send_telegram(startup_message)
