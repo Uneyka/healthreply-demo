@@ -155,3 +155,75 @@ copy .env.example .env
 docker compose up -d --build
 curl http://localhost:8080/health
 ```
+
+
+## Option A (fertige Online-Lösung) – TradingView + Telegram in ~30 Minuten
+Wenn du eine sofort nutzbare Lösung willst (ohne eigenen 24/7-Betrieb), nutze TradingView Alerts direkt auf Telegram.
+
+### Was du dafür brauchst
+1. TradingView Account (Pro empfohlen für mehr gleichzeitige Alerts)
+2. Telegram Bot (über @BotFather)
+3. Deine Telegram Chat-ID
+
+### Schritt 1: Telegram Bot erstellen
+1. In Telegram `@BotFather` öffnen.
+2. `/newbot` ausführen.
+3. Bot-Namen + Username vergeben.
+4. Bot-Token speichern.
+
+### Schritt 2: Chat-ID ermitteln
+1. Deinem Bot einmal `/start` schreiben.
+2. Im Browser öffnen:
+   `https://api.telegram.org/bot<DEIN_BOT_TOKEN>/getUpdates`
+3. In der JSON-Antwort `chat.id` kopieren.
+
+### Schritt 3: TradingView Alert erstellen
+1. Chart öffnen (z. B. SPY, NASDAQ, DAX-CFD).
+2. Indikator/Signalquelle wählen (z. B. Breakout, MA-Cross, RSI-Regeln).
+3. `Alert` anlegen.
+4. Bei Nachricht ein strukturiertes Template nutzen, z. B.:
+
+```text
+[TV SIGNAL] {{ticker}}
+Zeit: {{time}}
+Close: {{close}}
+Rule: Breakout/Trend
+Bias: {{strategy.order.action}}
+Risk: Manual decision only. No certainty.
+```
+
+### Schritt 4: TradingView -> Telegram verbinden
+TradingView kann Telegram nicht nativ direkt ansprechen; nutze einen Webhook-Middleware-Dienst (z. B. Make.com, Zapier, Pipedream).
+
+Standardfluss:
+1. TradingView Alert mit Webhook URL senden.
+2. Middleware empfängt Payload.
+3. Middleware ruft Telegram `sendMessage` API auf:
+   `https://api.telegram.org/bot<TOKEN>/sendMessage`
+4. Body:
+   - `chat_id`: deine Chat-ID
+   - `text`: Nachricht aus Alert
+
+### Schritt 5: Sicherheits- und Qualitätsfilter (empfohlen)
+- Nur Signale innerhalb definierter Handelszeiten.
+- Cooldown pro Asset (z. B. 10–20 min).
+- Mindestens 2 Bedingungen kombinieren (Trend + Volatilität).
+- Immer Risikozeile mitsenden (Slippage/Gap möglich).
+
+### Schritt 6: Live-Test
+1. Test-Alert manuell triggern.
+2. Prüfen, ob Telegram Nachricht ankommt.
+3. Erst danach mehrere Märkte gleichzeitig aktivieren.
+
+### Copy/Paste Telegram Test
+```bash
+curl -X POST "https://api.telegram.org/bot<TOKEN>/sendMessage" \
+  -d "chat_id=<CHAT_ID>" \
+  -d "text=Setup OK: TradingView Pipeline aktiv"
+```
+
+### Nach dem Start (deine Routine)
+- 1x täglich prüfen, ob Alerts angekommen sind.
+- Spam reduzieren: Cooldown + strengere Trigger.
+- Wöchentlich Regeln nachschärfen (False Positives reduzieren).
+
